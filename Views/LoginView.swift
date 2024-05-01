@@ -11,93 +11,71 @@ struct LoginView: View {
     
     @State private var email = ""
     @State private var password = ""
+    let customTextField = CustomTextField()
     
     var body: some View {
         ZStack {
             loginBackground()
             
-            VStack(spacing: 20)  {
-                //Header
-                VStack {
-                    Text("To Do List")
-                        .font(.system(size: 40))
-                        .bold()
-                        .foregroundStyle(.white)
-                    
-                    Text("Get things done")
-                        .font(.system(size: 24))
-                        .foregroundStyle(.white.secondary)
-                    
-                }
-                .padding(.top,60)
-                
-                
-                //Login Form
-                VStack(alignment: .leading, spacing: 10) {
-                    
-                    Group {
-                        Text("Email")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .padding(.top, 20)
+            ScrollView{
+                VStack(spacing: 40)  {
+                    //Header
+                    VStack {
+                        Text("To Do List")
+                            .font(.system(size: 40))
+                            .bold()
+                            .foregroundStyle(.white)
                         
-                        TextField("Email Address", text: $email)
-                            .frame(maxHeight: 44)
-                            .padding(.horizontal)
-                            .background(.thickMaterial)
-                            .cornerRadius(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.quinary)
-                            )
+                        Text("Get things done")
+                            .font(.system(size: 24))
+                            .foregroundStyle(.white.secondary)
+                        
+                    }
+                    .padding(.top,40)
+                    
+                    
+                    //Login Form
+                    VStack(alignment: .leading, spacing: 10) {
+                        
+                        customTextField.textFieldWithStyle(title: "Email Address", text: $email)
+                        
+                        customTextField.textFieldWithStyle(title: "Password", text: $password)
+                        
+                        Button {
+                            //Attempt to Login
+                        } label: {
+                            Text("Login")
+                                .foregroundColor(.white)
+                                .frame(maxWidth: .infinity)
+                                .frame(height: 44)
+                                .background(Color.blue)
+                                .cornerRadius(10)
+                        }
+                        .padding(.vertical, 20)
+                        
+                    }
+                    .padding(.vertical, 20)
+                    .padding(.horizontal, 30)
+                    .background(.thinMaterial.opacity(1))
+                    .frame(maxWidth: 320)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    
+                    Spacer()
+                    
+                    //Create Account
+                    VStack{
+                        Text("New around here?")
+                            .foregroundStyle(.secondary)
+                        Button("Create Account"){
+                            //SHow Registration
+                        }
                     }
                     
-                    Group{
-                        
-                        Text("Password")
-                            .font(.subheadline)
-                            .foregroundStyle(.secondary)
-                            .padding(.top, 10)
-                        
-                        TextField("Password", text: $password)
-                            .frame(maxHeight: 44)
-                            .padding(.horizontal)
-                            .background(.thickMaterial)
-                            .cornerRadius(10)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.quinary)
-                            )
-                    }
-
-                  Button {
-                    print("Login button pressed!")
-                  } label: {
-                    Text("Login")
-                      .foregroundColor(.white)
-                      .padding()
-                      .frame(maxWidth: .infinity, maxHeight: 44)
-                      .background(Color.blue)
-                      .cornerRadius(10)
-                  }
-                  .padding(.vertical, 20)
-
                 }
-                .padding(.horizontal, 20)
-                .background(.thinMaterial.opacity(1))
-                .frame(maxWidth: 320)
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-
-                Spacer()
+                .frame(maxWidth: .infinity)
             }
-            
-            
-            
-            
-            //Create Account
-            
-
         }
+        
     }
 }
 
