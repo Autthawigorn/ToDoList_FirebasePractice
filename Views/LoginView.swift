@@ -9,73 +9,77 @@ import SwiftUI
 
 struct LoginView: View {
     
-    @State private var email = ""
-    @State private var password = ""
+    @StateObject var viewModel = LoginViewModel()
+    
     let customTextField = CustomTextField()
+    let customSecureField = CustomSecureField()
     
     var body: some View {
-        ZStack {
-            loginBackground()
-            
-            ScrollView{
-                VStack(spacing: 40)  {
-                    //Header
-                    VStack {
-                        Text("To Do List")
-                            .font(.system(size: 40))
-                            .bold()
-                            .foregroundStyle(.white)
+        NavigationStack {
+            ZStack {
+                loginBackground()
+                
+                ScrollView {
+                    VStack(spacing: 40) {
+                        Spacer()
+                        Spacer()
                         
-                        Text("Get things done")
-                            .font(.system(size: 24))
-                            .foregroundStyle(.white.secondary)
-                        
-                    }
-                    .padding(.top,40)
-                    
-                    
-                    //Login Form
-                    VStack(alignment: .leading, spacing: 10) {
-                        
-                        customTextField.textFieldWithStyle(title: "Email Address", text: $email)
-                        
-                        customTextField.textFieldWithStyle(title: "Password", text: $password)
-                        
-                        Button {
-                            //Attempt to Login
-                        } label: {
+                        //Header
+                        VStack (spacing: 10) {
+                            Text("To Do List")
+                                .font(.system(size: 40))
+                                .bold()
+                                .foregroundStyle(.white)
+                            
                             Text("Login")
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity)
-                                .frame(height: 44)
-                                .background(Color.blue)
-                                .cornerRadius(10)
+                                .font(.system(size: 24))
+                                .foregroundStyle(.white.opacity(0.8))
+                            
+                        }
+                        
+                        //Login Form
+                        VStack(alignment: .leading, spacing: 10) {
+                            
+                            if !viewModel.errorMessage.isEmpty {
+                                Text(viewModel.errorMessage)
+                                    .foregroundStyle(.red)
+                                    .font(.caption)
+                            }
+                            
+                            customTextField.textFieldWithStyle(title: "Email Address", text: $viewModel.email)
+                            
+                            customSecureField.textFieldWithStyle(title: "Password", text: $viewModel.password)
+                            
+                            Button {
+                                viewModel.login()
+                            } label: {
+                                Text("Login")
+                            }
+                            .buttonStyle(AccentButton())
+                            .padding(.vertical, 20)
+                            
                         }
                         .padding(.vertical, 20)
+                        .padding(.horizontal, 30)
+                        .background(.thinMaterial.opacity(1))
+                        .frame(maxWidth: 440)
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                         
-                    }
-                    .padding(.vertical, 20)
-                    .padding(.horizontal, 30)
-                    .background(.thinMaterial.opacity(1))
-                    .frame(maxWidth: 320)
-                    .clipShape(RoundedRectangle(cornerRadius: 20))
-                    
-                    Spacer()
-                    
-                    //Create Account
-                    VStack{
-                        Text("New around here?")
-                            .foregroundStyle(.secondary)
-                        Button("Create Account"){
-                            //SHow Registration
+
+                        //Create Account
+                        VStack{
+                            Text("New around here?")
+                                .foregroundStyle(.secondary)
+                            
+                            NavigationLink("Create Account", destination: RegisterView())
                         }
                     }
+                    .padding(20)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     
                 }
-                .frame(maxWidth: .infinity)
             }
         }
-        
     }
 }
 
