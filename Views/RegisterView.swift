@@ -54,6 +54,8 @@ struct RegisterView: View {
                             
                             if let isError = viewModel.errorMessage {
                                 Text(isError)
+                                    .foregroundStyle(.red)
+                                    .font(.caption)
                             }
                             
                             customTextField.textFieldWithStyle(title: "User Name", text: $viewModel.userName)
@@ -96,19 +98,7 @@ struct RegisterView: View {
             }
         }
         .navigationBarBackButtonHidden(true)
-//        .toolbarBackground(.clear)
-//        .toolbar {
-//            ToolbarItem(placement: .navigationBarLeading) {
-//                Button {
-//                    dismiss()
-//                } label: {
-//                    Image(systemName: "arrow.left")
-//                }
-//                .buttonStyle(CustomNavBarButton())
-//            }
-//        }
-        
-        
+
     }
 }
 

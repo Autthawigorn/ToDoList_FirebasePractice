@@ -7,3 +7,8 @@
 
 import Foundation
 
+class ToDoListViewModel: ObservableObject {
+    @Published var showSheet = false
+    
+    init() {}
+}
