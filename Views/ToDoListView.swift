@@ -12,8 +12,9 @@ struct ToDoListView: View {
     
     @StateObject var viewModel: ToDoListViewModel
     @FirestoreQuery var items: [ToDoItem]
-    
-    @State private var selectedItem: ToDoItem?
+
+//    
+//    @State private var selectedItem: ToDoItem?
     
     init(userId: String) {
         //user/<id>/<todo>/<entries>
@@ -24,6 +25,7 @@ struct ToDoListView: View {
             wrappedValue: ToDoListViewModel(userId: userId)
         )
     }
+    
     
     var body: some View {
         NavigationStack {
@@ -40,18 +42,31 @@ struct ToDoListView: View {
                                 }
                             }
                             .tint(.red)
-                            Button {
-                                    // Another action
-                                } label: {
-                                    HStack {
-                                        Image(systemName: "pencil")
-                                        Text("Edit")
-                                    }
-                                }
-                                .tint(.blue)
+//                            Button {
+//                                // Another action
+//                            } label: {
+//                                HStack {
+//                                    Image(systemName: "pencil")
+//                                    Text("Edit")
+//                                }
+//                            }
+//                            .tint(.blue)
                         }
                 }
-            
+//                .onMove(perform: { indices, newOffset in
+//                    var updatedItems = items // Create a copy
+//                    updatedItems.move(fromOffsets: indices, toOffset: newOffset)
+//                    viewModel.updateOrder(items: updatedItems)
+//                })
+                .onDelete { indexSet in
+                    guard let index = indexSet.first else { return }
+                    let item = items[index]
+                    viewModel.delete(id: item.id)
+                }
+                
+            }
+            .sheet(isPresented: $viewModel.showSheet) {
+                NewItemView()
             }
             .navigationTitle("To Do List")
             .toolbar {
@@ -67,14 +82,9 @@ struct ToDoListView: View {
                 }
             }
         }
-        .sheet(isPresented: $viewModel.showSheet) {
-            NewItemView()
-        }
     }
-
     
 }
-
 #Preview {
     ToDoListView(userId: "tePKAmnz98UIEZx34bRZYQC75oD2")
 }
