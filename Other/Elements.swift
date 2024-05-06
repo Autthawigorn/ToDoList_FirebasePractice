@@ -87,5 +87,4 @@ struct AccentButton: ButtonStyle {
             .background(Color.blue)
             .cornerRadius(10)
     }
-    
 }

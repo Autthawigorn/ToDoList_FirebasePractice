@@ -28,6 +28,7 @@ struct ToDoItemView: View {
                 viewModel.toggleIsDone(item:item)
             } label: {
                 Image(systemName: item.isDone ? "checkmark.circle.fill" : "circle")
+                    .font(.system(size: 22))
             }
         }
     }
@@ -39,6 +40,6 @@ struct ToDoItemView: View {
         title: "Get Milk",
         dueDate: Date().timeIntervalSince1970,
         createDate: Date().timeIntervalSince1970,
-        isDone: false
+        isDone: true
     ))
 }
