@@ -19,7 +19,7 @@ class NewItemViewModel: ObservableObject {
             return
         }
         
-        title = title.trimmingCharacters(in: .whitespaces)
+        title = title.trimmingCharacters(in: .whitespacesAndNewlines)
         
         // Get current user id
         guard let uId = Auth.auth().currentUser?.uid else {

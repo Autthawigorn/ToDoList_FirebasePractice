@@ -10,14 +10,18 @@ import SwiftUI
 
 struct ToDoListView: View {
     
-    @StateObject var viewModel = ToDoListViewModel()
+    @StateObject var viewModel: ToDoListViewModel
     @FirestoreQuery var items: [ToDoItem]
-    @State private var editableItems: [ToDoItem] = []
+    
+    @State private var selectedItem: ToDoItem?
     
     init(userId: String) {
         //user/<id>/<todo>/<entries>
         self._items = FirestoreQuery(
             collectionPath: "users/" + userId + "/todos"
+        )
+        self._viewModel = StateObject(
+            wrappedValue: ToDoListViewModel(userId: userId)
         )
     }
     
@@ -25,16 +29,29 @@ struct ToDoListView: View {
         NavigationStack {
             List {
                 ForEach(items) { item in
-                    Text(item.title)
+                    ToDoItemView(item: item)
+                        .swipeActions {
+                            Button {
+                                viewModel.delete(id: item.id)
+                            } label: {
+                                HStack {
+                                    Image(systemName: "trash")
+                                    Text("Delete")
+                                }
+                            }
+                            .tint(.red)
+                            Button {
+                                    // Another action
+                                } label: {
+                                    HStack {
+                                        Image(systemName: "pencil")
+                                        Text("Edit")
+                                    }
+                                }
+                                .tint(.blue)
+                        }
                 }
-                .onDelete { indexSet in
-                    deleteItem(at: indexSet)
-                }
-                .onMove { indices, newOffset in
-                    moveItem(from: indices, to: newOffset)
-                }
-//                .onDelete { deleteItem.remove(atOffsets: $0) }
-//                .onMove { moveItem.move(fromOffsets: $0, toOffset: $1) }
+            
             }
             .navigationTitle("To Do List")
             .toolbar {
@@ -54,14 +71,7 @@ struct ToDoListView: View {
             NewItemView()
         }
     }
-    
-    private func deleteItem(at offsets: IndexSet) {
-        editableItems.remove(atOffsets: offsets)
-    }
-    
-    private func moveItem(from source: IndexSet, to destination: Int) {
-        editableItems.move(fromOffsets: source, toOffset: destination)
-    }
+
     
 }
 
